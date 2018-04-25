@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
 import com.jillywiggens.mihaly.base.R
+import com.jillywiggens.mihaly.services.ServiceFactory
 import kotlinx.android.synthetic.main.layout_menu.view.*
 
 /**
@@ -24,6 +25,6 @@ class MenuView(context: Context) {
     }
 
     fun goToBooks() {
-        view.booksBtn.text = "None Found"
+        ServiceFactory.bookService.getBooks().execute()
     }
 }
