@@ -1,8 +1,8 @@
 package com.jillywiggens.mihaly.services
 
-import retrofit2.Call
+import io.reactivex.Observable
 import retrofit2.http.GET
 
 interface BookService {
-    @GET("books") fun getBooks() : Call<Any>
+    @GET("books") fun getBooks() : Observable<Any>
 }

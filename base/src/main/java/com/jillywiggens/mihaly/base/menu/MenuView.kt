@@ -7,12 +7,14 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
 import com.jillywiggens.mihaly.base.R
 import com.jillywiggens.mihaly.services.ServiceFactory
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.layout_menu.view.*
 
 /**
  * Created by bobby on 3/25/2018.
  */
-class MenuView(context: Context) {
+class MenuView(private val context: Context) {
 
     val view: View
 
@@ -21,10 +23,14 @@ class MenuView(context: Context) {
             layoutParams = FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
         }
         view = LayoutInflater.from(context).inflate(R.layout.layout_menu, parent, true)
-        view.booksBtn.setOnClickListener { goToBooks() }
-    }
-
-    fun goToBooks() {
-        ServiceFactory.bookService.getBooks().execute()
+        view.booksBtn.setOnClickListener {
+            ServiceFactory.bookService.getBooks()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            { view.booksBtn.text = context.getString(R.string.congrations) },
+                            { view.booksBtn.text = context.getString(R.string.try_again) }
+                    )
+        }
     }
 }
