@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
 import com.jillywiggens.mihaly.base.R
+import com.jillywiggens.mihaly.services.BookService
 import com.jillywiggens.mihaly.services.ServiceFactory
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -24,7 +25,7 @@ class MenuView(private val context: Context) {
         }
         view = LayoutInflater.from(context).inflate(R.layout.layout_menu, parent, true)
         view.booksBtn.setOnClickListener {
-            ServiceFactory.bookService.getBooks()
+            ServiceFactory.generate<BookService>().getBooks()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
