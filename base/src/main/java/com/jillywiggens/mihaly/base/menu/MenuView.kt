@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
 import com.jillywiggens.mihaly.base.R
+import com.jillywiggens.mihaly.base.airports.AirportMapActivity
 import com.jillywiggens.mihaly.services.BookService
 import com.jillywiggens.mihaly.services.ServiceFactory
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -15,7 +16,7 @@ import kotlinx.android.synthetic.main.layout_menu.view.*
 /**
  * Created by bobby on 3/25/2018.
  */
-class MenuView(private val context: Context) {
+class MenuView(private val context: Context, private val presenter: MenuPresenter) {
 
     val view: View
 
@@ -24,6 +25,7 @@ class MenuView(private val context: Context) {
             layoutParams = FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
         }
         view = LayoutInflater.from(context).inflate(R.layout.layout_menu, parent, true)
+
         view.booksBtn.setOnClickListener {
             ServiceFactory.generate<BookService>().getBooks()
                     .subscribeOn(Schedulers.io())
@@ -32,6 +34,9 @@ class MenuView(private val context: Context) {
                             { view.booksBtn.text = context.getString(R.string.congrations) },
                             { view.booksBtn.text = context.getString(R.string.try_again) }
                     )
+        }
+        view.airportsBtn.setOnClickListener {
+            presenter.pushPageToScreen(AirportMapActivity::class)
         }
     }
 }
