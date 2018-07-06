@@ -1,5 +1,6 @@
 package com.jillywiggens.mihaly.base.menu
 
+import com.jillywiggens.mihaly.base.MainActivity
 import dagger.Component
 import dagger.Module
 import dagger.Provides
@@ -14,7 +15,9 @@ interface MenuPresenterFactory {
 }
 
 @Module
-class MenuPresenterModule {
+class MenuPresenterModule(val activity: MainActivity?) {
+
+    @Provides fun provideActivity() = activity
 
     @Module
     companion object {

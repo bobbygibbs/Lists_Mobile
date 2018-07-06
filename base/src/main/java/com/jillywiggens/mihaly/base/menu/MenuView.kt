@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.layout_menu.view.*
 /**
  * Created by bobby on 3/25/2018.
  */
-class MenuView(private val context: Context) {
+class MenuView(private val context: Context, private val presenter: MenuPresenter) {
 
     val view: View
 
