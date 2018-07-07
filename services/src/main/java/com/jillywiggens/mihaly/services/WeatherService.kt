@@ -8,5 +8,5 @@ interface WeatherService {
     @GET("MapClick.php?FcstType=json") fun getWeatherData(
             @Query("lat") latitude: Double,
             @Query("lon") longitude: Double
-    ) : Observable<Any>
+    ) : Observable<WeatherResponse>
 }
