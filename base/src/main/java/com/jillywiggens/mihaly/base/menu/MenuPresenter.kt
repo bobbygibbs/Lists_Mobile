@@ -3,7 +3,6 @@ package com.jillywiggens.mihaly.base.menu
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.view.View
 import com.jillywiggens.mihaly.base.MainActivity
 import com.jillywiggens.mihaly.models.Presenter
 import javax.inject.Inject
@@ -14,7 +13,7 @@ import kotlin.reflect.KClass
  */
 class MenuPresenter @Inject constructor(val activity: MainActivity?): Presenter() {
 
-    override fun presentView(context: Context) = MenuView(context, this).view
+    override fun createView(context: Context) = MenuView(context, this)
 
     inline fun <reified T : Activity> pushPageToScreen(newPage: KClass<T>) = activity?.startActivity(Intent(activity, newPage.java))
 }

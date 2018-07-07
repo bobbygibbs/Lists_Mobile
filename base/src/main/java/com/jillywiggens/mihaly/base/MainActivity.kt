@@ -1,7 +1,7 @@
 package com.jillywiggens.mihaly.base
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import com.jillywiggens.mihaly.base.menu.DaggerMenuPresenterFactory
 import com.jillywiggens.mihaly.base.menu.MenuPresenter
 import com.jillywiggens.mihaly.base.menu.MenuPresenterModule
@@ -17,6 +17,6 @@ class MainActivity : AppCompatActivity() {
                 .menuPresenterModule(MenuPresenterModule(this))
                 .build()
                 .injectPresenter()
-        setContentView(presenter.presentView(baseContext))
+        setContentView(presenter.createView(baseContext).view)
     }
 }
