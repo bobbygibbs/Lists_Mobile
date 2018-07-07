@@ -6,6 +6,7 @@ import android.view.View
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.jillywiggens.mihaly.base.R
@@ -40,10 +41,15 @@ class AirportMapView(val context: Context) : ViewDelegate(), OnMapReadyCallback 
     }
 
     private fun updateAirportData(response: WeatherResponse) {
-        val airportName = JacksonHelper.readString(response.currentObservation, NAME_KEY)
-        val airportLatitude = JacksonHelper.readString(response.location, LATITUDE_KEY).toDouble()
-        val airportLongitude = JacksonHelper.readString(response.location, LONGITUDE_KEY).toDouble()
-        map?.addMarker(MarkerOptions().title(airportName).position(LatLng(airportLatitude, airportLongitude)))
+        map?.apply {
+            val airportName = JacksonHelper.readString(response.currentObservation, NAME_KEY)
+            val airportLatitude = JacksonHelper.readString(response.location, LATITUDE_KEY).toDouble()
+            val airportLongitude = JacksonHelper.readString(response.location, LONGITUDE_KEY).toDouble()
+            addMarker(MarkerOptions()
+                    .title(airportName)
+                    .position(LatLng(airportLatitude, airportLongitude))
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.airport)))
+        }
     }
 
     private fun loadLatLng() = context.resources.getStringArray(R.array.locations)
