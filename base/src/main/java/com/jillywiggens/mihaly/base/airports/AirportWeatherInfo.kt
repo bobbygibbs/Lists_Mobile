@@ -1,7 +1,8 @@
 package com.jillywiggens.mihaly.base.airports
 
-import android.support.annotation.IdRes
+import android.support.annotation.DrawableRes
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 
 data class AirportWeatherInfo(
         val name: String,
@@ -9,5 +10,6 @@ data class AirportWeatherInfo(
         val temperature: Int,
         val windSpeed: Int,
         val windDirection: Direction,
-        @IdRes var imageResId: Int
+        @DrawableRes var imageResId: Int,
+        val marker: Marker?
 )

@@ -21,7 +21,10 @@ class WeatherInfoWindowAdapter(private val airports: List<AirportWeatherInfo>, c
             windTv.text = "${it.windSpeed} MPH"
             tempTv.text = "${it.temperature}°"
             with(context) {
-                tempTv.background = RoundedBitmapDrawableFactory.create(resources, BitmapFactory.decodeResource(resources, it.imageResId)).apply {
+                tempTv.background = RoundedBitmapDrawableFactory.create(
+                        resources,
+                        BitmapFactory.decodeResource(resources, it.imageResId)
+                ).apply {
                     isCircular = true
                     alpha = 100
                 }
