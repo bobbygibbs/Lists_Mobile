@@ -13,7 +13,8 @@ enum class Direction(val resId: Int) {
     NW(R.drawable.direction_north_west);
 
     companion object {
-        @JvmStatic fun fromDegrees(degrees: Int) = when(degrees % 360) {
+        @JvmStatic
+        fun fromDegrees(degrees: Int) = when (degrees % 360) {
             in 0..22, in 339..359 -> E
             in 23..67 -> NE
             in 68..112 -> N

@@ -7,8 +7,8 @@ import com.fasterxml.jackson.databind.JsonNode
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class WeatherResponse @JsonCreator constructor(
-    @JsonProperty("location") val location: JsonNode,
-    @JsonProperty("time") val time: JsonNode,
-    @JsonProperty("data") val data: JsonNode,
-    @JsonProperty("currentobservation") val currentObservation: JsonNode
+        @JsonProperty("location") val location: JsonNode,
+        @JsonProperty("time") val time: JsonNode,
+        @JsonProperty("data") val data: JsonNode,
+        @JsonProperty("currentobservation") val currentObservation: JsonNode
 )

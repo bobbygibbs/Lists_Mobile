@@ -23,5 +23,5 @@ object JacksonHelper {
         else
             throwError(jsonKey)
 
-    private fun throwError(jsonKey: String) : Nothing = throw IOException("No key matching '$jsonKey' found in expected JSON node")
+    private fun throwError(jsonKey: String): Nothing = throw IOException("No key matching '$jsonKey' found in expected JSON node")
 }

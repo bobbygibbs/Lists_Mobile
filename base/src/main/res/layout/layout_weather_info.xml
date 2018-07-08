@@ -7,12 +7,12 @@
 
     <TextView
         android:id="@+id/titleTv"
-        android:maxWidth="200dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:maxWidth="200dp"
+        android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:textSize="20sp"
-        android:textAlignment="center"/>
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/tempTv"
@@ -21,8 +21,8 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:textColor="@android:color/black"
-        android:textStyle="bold"
-        android:textSize="50sp"/>
+        android:textSize="50sp"
+        android:textStyle="bold" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -35,13 +35,13 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:gravity="center"
-            android:padding="5dp"/>
+            android:padding="5dp" />
 
         <ImageView
             android:id="@+id/windIv"
-            android:layout_toEndOf="@id/windTv"
-            android:layout_centerVertical="true"
             android:layout_width="18dp"
-            android:layout_height="18dp"/>
+            android:layout_height="18dp"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/windTv" />
     </RelativeLayout>
 </LinearLayout>

@@ -32,5 +32,5 @@ class WeatherInfoWindowAdapter(private val airports: List<AirportWeatherInfo>, c
         }
     }
 
-    override fun getInfoWindow(marker: Marker) : View? = null
+    override fun getInfoWindow(marker: Marker): View? = null
 }

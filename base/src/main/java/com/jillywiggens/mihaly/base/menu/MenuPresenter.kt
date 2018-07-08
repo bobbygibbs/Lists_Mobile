@@ -11,7 +11,7 @@ import kotlin.reflect.KClass
 /**
  * Created by bobby on 3/25/2018.
  */
-class MenuPresenter @Inject constructor(val activity: MainActivity?): Presenter() {
+class MenuPresenter @Inject constructor(val activity: MainActivity?) : Presenter() {
 
     override fun createView(context: Context) = MenuView(context, this)
 
