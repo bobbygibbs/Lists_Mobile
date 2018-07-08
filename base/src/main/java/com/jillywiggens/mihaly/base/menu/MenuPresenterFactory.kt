@@ -11,16 +11,18 @@ import dagger.Provides
 
 @Component(modules = arrayOf(MenuPresenterModule::class))
 interface MenuPresenterFactory {
-    fun injectPresenter() : MenuPresenter
+    fun injectPresenter(): MenuPresenter
 }
 
 @Module
 class MenuPresenterModule(val activity: MainActivity?) {
 
-    @Provides fun provideActivity() = activity
+    @Provides
+    fun provideActivity() = activity
 
     @Module
     companion object {
-        @Provides fun providePresenter(presenter: MenuPresenter) = presenter
+        @Provides
+        fun providePresenter(presenter: MenuPresenter) = presenter
     }
 }
