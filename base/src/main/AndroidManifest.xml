@@ -10,6 +10,14 @@
             android:name="aia-compat-api-min-version"
             android:value="1" />
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCK8fMdiU7ksLFkdleFJ4U2va_4wOPLg0M"/>
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
         <activity
             android:name=".MainActivity"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
@@ -30,6 +38,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".airports.AirportMapActivity" />
     </application>
 
 </manifest>
