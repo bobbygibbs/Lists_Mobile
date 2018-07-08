@@ -24,6 +24,7 @@ class AirportMapView(val context: Context) : ViewDelegate(), OnMapReadyCallback 
     override lateinit var view: View
 
     private var map: GoogleMap? = null
+    private var airports = mutableListOf<AirportWeatherInfo>()
 
     override fun onMapReady(map: GoogleMap) {
         this.map = map
@@ -33,23 +34,39 @@ class AirportMapView(val context: Context) : ViewDelegate(), OnMapReadyCallback 
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             { updateAirportData(it) },
-                            { Log.e(AirportMapView::class.simpleName, "Failed to parse JSON", it) }
+                            { Log.e(AirportMapView::class.simpleName, "Failed to parse JSON", it) },
+                            { map.setInfoWindowAdapter(WeatherInfoWindowAdapter(airports, context)) }
                     )
         }
         val eppley = LatLng(41.303031, -95.893952)
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(eppley, 5f))
+        map.setOnInfoWindowClickListener { map.animateCamera(CameraUpdateFactory.newLatLngZoom(it.position, 10f)) }
     }
 
     private fun updateAirportData(response: WeatherResponse) {
-        map?.apply {
-            val airportName = JacksonHelper.readString(response.currentObservation, NAME_KEY)
-            val airportLatitude = JacksonHelper.readString(response.location, LATITUDE_KEY).toDouble()
-            val airportLongitude = JacksonHelper.readString(response.location, LONGITUDE_KEY).toDouble()
-            addMarker(MarkerOptions()
-                    .title(airportName)
-                    .position(LatLng(airportLatitude, airportLongitude))
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.airport)))
-        }
+        val airport = AirportWeatherInfo(
+            name = JacksonHelper.readString(response.currentObservation, NAME_KEY),
+            location = LatLng(
+                JacksonHelper.readDouble(response.location, LATITUDE_KEY),
+                JacksonHelper.readDouble(response.location, LONGITUDE_KEY)
+            ),
+            temperature = JacksonHelper.readInt(response.currentObservation, TEMPERATURE_KEY),
+            windSpeed = JacksonHelper.readInt(response.currentObservation, WIND_SPEED_KEY),
+            windDirection = Direction.fromDegrees(JacksonHelper.readInt(response.currentObservation, WIND_DIRECTION_KEY)),
+            imageResId = context.resources.getIdentifier(
+                    JacksonHelper.readString(response.currentObservation, WEATHER_IMAGE_KEY)
+                        .dropLast(4)
+                        .replace("wind_", ""),
+                    "drawable",
+                    context.packageName
+            )
+        )
+        airports.add(airport)
+
+        map?.addMarker(MarkerOptions()
+                .title(airport.name)
+                .position(airport.location)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.airport)))
     }
 
     private fun loadLatLng() = context.resources.getStringArray(R.array.locations)
@@ -62,5 +79,9 @@ class AirportMapView(val context: Context) : ViewDelegate(), OnMapReadyCallback 
         private const val NAME_KEY = "name"
         private const val LATITUDE_KEY = "latitude"
         private const val LONGITUDE_KEY = "longitude"
+        private const val TEMPERATURE_KEY = "Temp"
+        private const val WIND_SPEED_KEY = "Winds"
+        private const val WIND_DIRECTION_KEY = "Windd"
+        private const val WEATHER_IMAGE_KEY = "Weatherimage"
     }
 }
