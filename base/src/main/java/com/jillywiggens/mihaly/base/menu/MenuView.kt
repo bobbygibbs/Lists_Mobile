@@ -8,8 +8,7 @@ import android.widget.FrameLayout
 import com.jillywiggens.mihaly.base.R
 import com.jillywiggens.mihaly.base.airports.AirportMapActivity
 import com.jillywiggens.mihaly.models.ViewDelegate
-import com.jillywiggens.mihaly.services.BookService
-import com.jillywiggens.mihaly.services.ServiceFactory
+import com.jillywiggens.mihaly.services.BookServiceFactory
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.layout_menu.view.*
@@ -29,7 +28,7 @@ class MenuView(context: Context, presenter: MenuPresenter) : ViewDelegate() {
         view = LayoutInflater.from(context).inflate(resId, parent, true)
 
         view.booksBtn.setOnClickListener {
-            ServiceFactory.generate<BookService>().getBooks()
+            BookServiceFactory.generate().getBooks()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(

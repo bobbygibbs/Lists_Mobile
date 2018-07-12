@@ -16,9 +16,8 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.jillywiggens.mihaly.base.R
 import com.jillywiggens.mihaly.models.ViewDelegate
 import com.jillywiggens.mihaly.services.JacksonHelper
-import com.jillywiggens.mihaly.services.ServiceFactory
 import com.jillywiggens.mihaly.services.WeatherResponse
-import com.jillywiggens.mihaly.services.WeatherService
+import com.jillywiggens.mihaly.services.WeatherServiceFactory
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.layout_airport_map.view.*
@@ -36,7 +35,7 @@ class AirportMapView(val context: Context) : ViewDelegate(), OnMapReadyCallback 
     override fun onMapReady(map: GoogleMap) {
         this.map = map
         loadLatLng().forEach {
-            ServiceFactory.generate<WeatherService>().getWeatherData(it.latitude, it.longitude)
+            WeatherServiceFactory.generate().getWeatherData(it.latitude, it.longitude)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
