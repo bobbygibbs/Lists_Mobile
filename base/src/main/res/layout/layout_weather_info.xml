@@ -12,16 +12,16 @@
         android:maxWidth="200dp"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:textSize="20sp" />
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/tempTv"
-        android:layout_width="125dp"
-        android:layout_height="125dp"
+        android:layout_width="115dp"
+        android:layout_height="115dp"
         android:layout_gravity="center"
         android:gravity="center"
         android:textColor="@android:color/black"
-        android:textSize="50sp"
+        android:textSize="45sp"
         android:textStyle="bold" />
 
     <RelativeLayout
