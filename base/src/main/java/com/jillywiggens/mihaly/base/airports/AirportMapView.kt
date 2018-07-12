@@ -1,6 +1,7 @@
 package com.jillywiggens.mihaly.base.airports
 
 import android.content.Context
+import android.support.v7.widget.LinearLayoutManager
 import android.transition.ChangeBounds
 import android.transition.TransitionManager
 import android.transition.TransitionSet
@@ -43,7 +44,8 @@ class AirportMapView(val context: Context) : ViewDelegate(), OnMapReadyCallback 
                             { Log.e(AirportMapView::class.simpleName, "Failed to parse JSON", it) },
                             {
                                 map.setInfoWindowAdapter(WeatherInfoWindowAdapter(airports, context))
-                                view.listLv.adapter = AirportListViewAdapter(this, airports.sortedByDescending { it.temperature })
+                                view.listRv.adapter = AirportListViewAdapter(this, airports.sortedByDescending { it.temperature })
+                                view.listRv.layoutManager = LinearLayoutManager(context)
                             }
                     )
         }
@@ -84,7 +86,7 @@ class AirportMapView(val context: Context) : ViewDelegate(), OnMapReadyCallback 
         if (this.expanded != expanded) {
             this.expanded = expanded
             TransitionManager.beginDelayedTransition(view.headerLl, TransitionSet().addTransition(ChangeBounds()))
-            view.listLv.visibility = if (expanded) View.VISIBLE else View.GONE
+            view.listRv.visibility = if (expanded) View.VISIBLE else View.GONE
             view.listIb.setImageResource(if (expanded) R.drawable.ic_close else R.drawable.ic_list)
         }
     }
