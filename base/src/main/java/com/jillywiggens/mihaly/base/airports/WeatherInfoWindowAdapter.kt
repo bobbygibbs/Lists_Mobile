@@ -20,20 +20,22 @@ class WeatherInfoWindowAdapter(private val airports: List<AirportWeatherInfo>, c
             windIv.setImageResource(it.windDirection.resId)
             windTv.text = "${it.windSpeed} MPH"
             tempTv.text = "${it.temperature}°"
-            with(context) {
-                tempTv.background = RoundedBitmapDrawableFactory.create(
-                        resources,
-                        BitmapFactory.decodeResource(
-                                resources,
-                                resources.getIdentifier(it.imageFileName, "drawable", packageName)
-                        )
-                ).apply {
-                    isCircular = true
-                    alpha = 100
-                }
-            }
+            tempTv.background = it.imageFileName.toCircleDrawable(context)
         }
     }
 
     override fun getInfoWindow(marker: Marker): View? = null
+
+    companion object {
+        fun String.toCircleDrawable(context: Context) = RoundedBitmapDrawableFactory.create(
+                context.resources,
+                BitmapFactory.decodeResource(
+                        context.resources,
+                        context.resources.getIdentifier(this, "drawable", context.packageName)
+                )
+        ).apply {
+            isCircular = true
+            alpha = 100
+        }
+    }
 }
