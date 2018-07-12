@@ -18,6 +18,6 @@ class MainActivity : AppCompatActivity() {
                 .menuPresenterModule(MenuPresenterModule(this))
                 .build()
                 .injectPresenter()
-        setContentView(presenter.createView(baseContext).view)
+        setContentView(presenter.createView().view)
     }
 }

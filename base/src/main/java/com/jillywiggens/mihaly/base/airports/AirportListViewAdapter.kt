@@ -4,12 +4,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.jillywiggens.mihaly.base.R
 import kotlinx.android.synthetic.main.layout_airport_list_item_view.view.*
 
 class AirportListViewAdapter(
-        val mapView: AirportMapView,
+        val presenter: AirportMapPresenter,
         val airports: List<AirportWeatherInfo>
 ) : RecyclerView.Adapter<AirportListViewAdapter.AirportListViewHolder>() {
 
@@ -30,8 +29,8 @@ class AirportListViewAdapter(
                         context.packageName
                 ))
                 setOnClickListener {
-                    mapView.map?.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 5f))
-                    mapView.toggleListDrawer(false)
+                    presenter.mapDelegate.moveCameraTo(location)
+                    presenter.closeListDrawer()
                     marker?.showInfoWindow()
                 }
             }

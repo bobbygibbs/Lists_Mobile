@@ -10,10 +10,11 @@ class AirportMapActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val viewDelegate = AirportMapPresenter().createView(baseContext)
+        val presenter = AirportMapPresenter(baseContext)
+        val viewDelegate = presenter.createView()
         setContentView(viewDelegate.resId)
         viewDelegate.view = findViewById(android.R.id.content)
 
-        (supportFragmentManager.findFragmentById(R.id.mapView) as? SupportMapFragment)?.getMapAsync(viewDelegate)
+        (supportFragmentManager.findFragmentById(R.id.mapView) as? SupportMapFragment)?.getMapAsync(presenter.mapDelegate)
     }
 }

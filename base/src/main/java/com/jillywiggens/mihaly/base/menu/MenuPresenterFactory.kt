@@ -15,7 +15,7 @@ interface MenuPresenterFactory {
 }
 
 @Module
-class MenuPresenterModule(val activity: MainActivity?) {
+class MenuPresenterModule(val activity: MainActivity) {
 
     @Provides
     fun provideActivity() = activity
