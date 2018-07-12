@@ -1,27 +1,19 @@
 package com.jillywiggens.mihaly.services
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.ObjectMapper
 import java.io.IOException
+import kotlin.reflect.KClass
 
 object JacksonHelper {
 
-    fun readString(jsonNode: JsonNode, jsonKey: String) =
-        if (jsonNode.has(jsonKey))
-            jsonNode.get(jsonKey).asText("")
-        else
-            throwError(jsonKey)
+    fun readString(jsonNode: JsonNode, jsonKey: String) = jsonNode.safelyGet(jsonKey).asText("")
 
-    fun readInt(jsonNode: JsonNode, jsonKey: String) =
-            if (jsonNode.has(jsonKey))
-                jsonNode.get(jsonKey).asInt(0)
-            else
-                throwError(jsonKey)
+    fun readInt(jsonNode: JsonNode, jsonKey: String) = jsonNode.safelyGet(jsonKey).asInt(0)
 
-    fun readDouble(jsonNode: JsonNode, jsonKey: String) =
-        if (jsonNode.has(jsonKey))
-            jsonNode.get(jsonKey).asDouble(0.0)
-        else
-            throwError(jsonKey)
+    fun readDouble(jsonNode: JsonNode, jsonKey: String) = jsonNode.safelyGet(jsonKey).asDouble(0.0)
 
-    private fun throwError(jsonKey: String): Nothing = throw IOException("No key matching '$jsonKey' found in expected JSON node")
+    fun <T : Any> readValue(jsonNode: JsonNode, clazz: KClass<T>) = ObjectMapper().readValue(jsonNode.toString(), clazz.java) as T
+
+    private fun JsonNode.safelyGet(jsonKey: String) = if (has(jsonKey)) get(jsonKey) else throw IOException("No key matching '$jsonKey' found in expected JSON node")
 }

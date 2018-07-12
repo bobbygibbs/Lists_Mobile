@@ -23,7 +23,10 @@ class WeatherInfoWindowAdapter(private val airports: List<AirportWeatherInfo>, c
             with(context) {
                 tempTv.background = RoundedBitmapDrawableFactory.create(
                         resources,
-                        BitmapFactory.decodeResource(resources, it.imageResId)
+                        BitmapFactory.decodeResource(
+                                resources,
+                                resources.getIdentifier(it.imageFileName, "drawable", packageName)
+                        )
                 ).apply {
                     isCircular = true
                     alpha = 100

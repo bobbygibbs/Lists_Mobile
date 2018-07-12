@@ -7,6 +7,7 @@ import android.transition.TransitionManager
 import android.transition.TransitionSet
 import android.util.Log
 import android.view.View
+import com.fasterxml.jackson.databind.JsonNode
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -16,7 +17,6 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.jillywiggens.mihaly.base.R
 import com.jillywiggens.mihaly.models.ViewDelegate
 import com.jillywiggens.mihaly.services.JacksonHelper
-import com.jillywiggens.mihaly.services.WeatherResponse
 import com.jillywiggens.mihaly.services.WeatherServiceFactory
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -39,7 +39,7 @@ class AirportMapView(val context: Context) : ViewDelegate(), OnMapReadyCallback 
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
-                            { updateAirportData(it) },
+                            { addAirportFromJson(it) },
                             { Log.e(AirportMapView::class.simpleName, "Failed to parse JSON", it) },
                             {
                                 map.setInfoWindowAdapter(WeatherInfoWindowAdapter(airports, context))
@@ -55,30 +55,13 @@ class AirportMapView(val context: Context) : ViewDelegate(), OnMapReadyCallback 
         map.setOnMapClickListener { toggleListDrawer(false) }
     }
 
-    private fun updateAirportData(response: WeatherResponse) {
-        val name = JacksonHelper.readString(response.currentObservation, NAME_KEY)
-        val location = LatLng(
-                JacksonHelper.readDouble(response.location, LATITUDE_KEY),
-                JacksonHelper.readDouble(response.location, LONGITUDE_KEY)
-        )
-        airports.add(AirportWeatherInfo(
-            name = name,
-            location = location,
-            temperature = JacksonHelper.readInt(response.currentObservation, TEMPERATURE_KEY),
-            windSpeed = JacksonHelper.readInt(response.currentObservation, WIND_SPEED_KEY),
-            windDirection = Direction.fromDegrees(JacksonHelper.readInt(response.currentObservation, WIND_DIRECTION_KEY)),
-            imageResId = context.resources.getIdentifier(
-                    JacksonHelper.readString(response.currentObservation, WEATHER_IMAGE_KEY)
-                        .dropLast(4)
-                        .replace("wind_", ""),
-                    "drawable",
-                    context.packageName
-            ),
+    private fun addAirportFromJson(json: JsonNode) {
+        airports.add(JacksonHelper.readValue(json, AirportWeatherInfo::class).apply {
             marker = map?.addMarker(MarkerOptions()
-                .title(name)
-                .position(location)
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.airport)))
-        ))
+                    .title(name)
+                    .position(location)
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.airport)))
+        })
     }
 
     fun toggleListDrawer(expanded: Boolean = !this.expanded) {
@@ -96,13 +79,5 @@ class AirportMapView(val context: Context) : ViewDelegate(), OnMapReadyCallback 
 
     companion object {
         private fun String.toDoublePair() = split(",").map { it.toDouble() }
-
-        private const val NAME_KEY = "name"
-        private const val LATITUDE_KEY = "latitude"
-        private const val LONGITUDE_KEY = "longitude"
-        private const val TEMPERATURE_KEY = "Temp"
-        private const val WIND_SPEED_KEY = "Winds"
-        private const val WIND_DIRECTION_KEY = "Windd"
-        private const val WEATHER_IMAGE_KEY = "Weatherimage"
     }
 }

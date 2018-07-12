@@ -8,7 +8,10 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.jillywiggens.mihaly.base.R
 import kotlinx.android.synthetic.main.layout_airport_list_item_view.view.*
 
-class AirportListViewAdapter(val mapView: AirportMapView, val airports: List<AirportWeatherInfo>) : RecyclerView.Adapter<AirportListViewAdapter.AirportListViewHolder>() {
+class AirportListViewAdapter(
+        val mapView: AirportMapView,
+        val airports: List<AirportWeatherInfo>
+) : RecyclerView.Adapter<AirportListViewAdapter.AirportListViewHolder>() {
 
     class AirportListViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView)
 
@@ -21,7 +24,11 @@ class AirportListViewAdapter(val mapView: AirportMapView, val airports: List<Air
             with(airports[index]) {
                 titleTv.text = name
                 tempTv.text = "$temperature°"
-                weatherIv.setImageResource(imageResId)
+                weatherIv.setImageResource(context.resources.getIdentifier(
+                        imageFileName,
+                        "drawable",
+                        context.packageName
+                ))
                 setOnClickListener {
                     mapView.map?.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 5f))
                     mapView.toggleListDrawer(false)

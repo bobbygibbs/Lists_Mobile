@@ -1,5 +1,6 @@
 package com.jillywiggens.mihaly.services
 
+import com.fasterxml.jackson.databind.JsonNode
 import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -15,6 +16,6 @@ object WeatherServiceFactory {
         fun getWeatherData(
                 @Query("lat") latitude: Double,
                 @Query("lon") longitude: Double
-        ): Observable<WeatherResponse>
+        ): Observable<JsonNode>
     }
 }
