@@ -2,9 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jillywiggens.mihaly.base">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
-    <application android:icon="@mipmap/ic_launcher"
+    <application
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name">
         <meta-data
             android:name="aia-compat-api-min-version"
@@ -30,6 +31,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".books.BooklistActivity"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
     </application>
 
 </manifest>
