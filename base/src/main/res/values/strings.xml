@@ -5,6 +5,7 @@
     <string name="try_again">try again</string>
     <string name="add_book">Add Book</string>
     <string name="add">Add</string>
+    <string name="prompt_add_book">Fill out the following information for the book you would like to add:</string>
     <string name="delete_book">Delete Book</string>
     <string name="confirm_delete_book">Are you sure you want to remove this book from the list?</string>
 

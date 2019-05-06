@@ -5,4 +5,5 @@ package com.jillywiggens.mihaly.models
  */
 abstract class Presenter {
     abstract fun createView(): ViewDelegate
+    open fun destroyView() { }
 }
