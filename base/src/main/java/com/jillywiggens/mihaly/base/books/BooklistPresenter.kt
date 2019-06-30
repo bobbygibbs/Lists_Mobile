@@ -19,19 +19,21 @@ import kotlinx.android.synthetic.main.layout_books_dialog_add.view.*
 
 class BooklistPresenter(val context: Context) : Presenter() {
 
+    override val TAG = "BOOKS"
+
     lateinit var view: BooklistView
 
     private var disposables = CompositeDisposable()
 
     private val bookService = BookServiceFactory.generate()
 
-    override fun createView() = BooklistView(this).also { view = it }
-
-    override fun destroyView() = disposables.clear()
-
     init {
         if (disposables.isDisposed) disposables = CompositeDisposable()
     }
+
+    override fun createView() = BooklistView(this).also { view = it }
+
+    override fun destroyView() = disposables.clear()
 
     fun loadBooks() {
         disposables.add(bookService.getBooks()
@@ -47,56 +49,57 @@ class BooklistPresenter(val context: Context) : Presenter() {
                                         )
                                 )
                         )
-                        view.finishRefresh()
                     } catch (e: Throwable) {
-                        Log.d("BOOKS", "missing pages", e)
+                        Log.d(TAG, "missing pages", e)
+                    } finally {
+                        view.finishRefresh()
                     }
                 },
                         {
-                            Log.d("BOOKS", "missing pages", it)
+                            Log.d(TAG, "missing pages", it)
+                            view.finishRefresh("Yikes")
                         }
                 ))
     }
 
-    fun addBook() {
-        val dialogView = (context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(R.layout.layout_books_dialog_add, null)
-        AlertDialog.Builder(context)
-                .setTitle(R.string.add_book)
-                .setMessage(R.string.prompt_add_book)
-                .setView(dialogView)
-                .setPositiveButton(R.string.add) { di, _ ->
-                    disposables.add(bookService.addBook(Book(
-                            0,
-                            dialogView.titleEt.text.toString(),
-                            dialogView.authorEt.text.toString(),
-                            dialogView.yearEt.text.toString().toInt(),
-                            dialogView.pagesEt.text.toString().toInt()
-                    ))
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(
-                                    { loadBooks() },
-                                    { Log.d("BOOKS", "missing pages", it) }
+    fun addBook() =
+            with((context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(R.layout.layout_books_dialog_add, null)) {
+                AlertDialog.Builder(context)
+                        .setTitle(R.string.add_book)
+                        .setMessage(R.string.prompt_add_book)
+                        .setView(this)
+                        .setPositiveButton(R.string.add) { _, _ ->
+                            disposables.add(bookService.addBook(Book(
+                                    0,
+                                    titleEt.text.toString(),
+                                    authorEt.text.toString(),
+                                    yearEt.text.toString().toInt(),
+                                    pagesEt.text.toString().toInt()
                             ))
-                }
-                .setNegativeButton(android.R.string.no, null)
-                .show()
-    }
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(
+                                            { loadBooks() },
+                                            { Log.d(TAG, "missing pages", it) }
+                                    ))
+                        }
+                        .setNegativeButton(android.R.string.no, null)
+                        .show()
+            }
 
-    fun deleteBook(book: Book) {
-        AlertDialog.Builder(context)
-                .setTitle(R.string.delete_book)
-                .setMessage(R.string.confirm_delete_book)
-                .setPositiveButton(android.R.string.yes) { _, _ ->
-                    disposables.add(bookService.deleteBook(book.id)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(
-                                    { loadBooks() },
-                                    { Log.d("BOOKS", "missing pages", it) }
-                            ))
-                }
-                .setNegativeButton(android.R.string.no, null)
-                .show()
-    }
+    fun deleteBook(book: Book) =
+            AlertDialog.Builder(context)
+                    .setTitle(R.string.delete_book)
+                    .setMessage(R.string.confirm_delete_book)
+                    .setPositiveButton(android.R.string.yes) { _, _ ->
+                        disposables.add(bookService.deleteBook(book.id)
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(
+                                        { loadBooks() },
+                                        { Log.d(TAG, "missing pages", it) }
+                                ))
+                    }
+                    .setNegativeButton(android.R.string.no, null)
+                    .show()
 }

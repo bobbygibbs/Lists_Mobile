@@ -14,10 +14,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val presenter = DaggerMenuPresenterFactory.builder()
-                .menuPresenterModule(MenuPresenterModule(this))
-                .build()
-                .injectPresenter()
-        setContentView(presenter.createView().view)
+        setContentView(
+                DaggerMenuPresenterFactory.builder()
+                        .menuPresenterModule(MenuPresenterModule(this))
+                        .build()
+                        .injectPresenter()
+                        .createView()
+                        .view
+        )
     }
 }

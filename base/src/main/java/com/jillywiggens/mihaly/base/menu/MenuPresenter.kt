@@ -12,6 +12,8 @@ import kotlin.reflect.KClass
  */
 class MenuPresenter @Inject constructor(val activity: MainActivity) : Presenter() {
 
+    override val TAG = "MENU"
+
     override fun createView() = MenuView(activity.baseContext, this)
 
     inline fun <reified T : Activity> pushPageToScreen(newPage: KClass<T>) = activity.startActivity(Intent(activity, newPage.java))
