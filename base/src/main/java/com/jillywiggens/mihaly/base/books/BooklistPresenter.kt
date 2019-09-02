@@ -27,6 +27,8 @@ class BooklistPresenter(val context: Context) : Presenter() {
 
     private val bookService = BookServiceFactory.generate()
 
+    private val db by lazy { generateDatabase(context) }
+
     init {
         if (disposables.isDisposed) disposables = CompositeDisposable()
     }
@@ -37,18 +39,18 @@ class BooklistPresenter(val context: Context) : Presenter() {
 
     fun loadBooks() {
         disposables.add(bookService.getBooks()
+                .map { JacksonHelper.readValues<Book>(
+                        it,
+                        ObjectMapper().registerModule(
+                                SimpleModule().addDeserializer(Book::class.java, BookDeserializer())
+                        )
+                ) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     try {
-                        view.buildBooklist(
-                                JacksonHelper.readValues(
-                                        it,
-                                        ObjectMapper().registerModule(
-                                                SimpleModule().addDeserializer(Book::class.java, BookDeserializer())
-                                        )
-                                )
-                        )
+                        view.buildBooklist(it)
+                        db.bookDao().insertAll(*it.toTypedArray())
                     } catch (e: Throwable) {
                         Log.d(TAG, "missing pages", e)
                     } finally {
@@ -58,6 +60,7 @@ class BooklistPresenter(val context: Context) : Presenter() {
                         {
                             Log.d(TAG, "missing pages", it)
                             view.finishRefresh("Yikes")
+                            showCachedResults()
                         }
                 ))
     }
@@ -102,4 +105,11 @@ class BooklistPresenter(val context: Context) : Presenter() {
                     }
                     .setNegativeButton(android.R.string.no, null)
                     .show()
+
+    private fun showCachedResults() {
+        disposables.add(db.bookDao().getAll()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(view::buildBooklist) { Log.d(TAG, "missing pages", it) })
+    }
 }

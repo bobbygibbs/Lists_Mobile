@@ -10,14 +10,14 @@ class BooklistActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        with (BooklistPresenter(this)) {
+        presenter = BooklistPresenter(this).apply {
             createView().let { viewDelegate ->
                 setContentView(viewDelegate.resId)
                 viewDelegate.view = findViewById(android.R.id.content)
             }
-
-            loadBooks()
         }
+
+        presenter.loadBooks()
     }
 
     override fun onDestroy() {
