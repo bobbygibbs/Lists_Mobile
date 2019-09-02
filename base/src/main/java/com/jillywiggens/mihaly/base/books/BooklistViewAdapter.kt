@@ -1,9 +1,9 @@
 package com.jillywiggens.mihaly.base.books
 
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.jillywiggens.mihaly.base.R
 import com.jillywiggens.mihaly.models.books.Book
 import kotlinx.android.synthetic.main.layout_books_list_item_view.view.*

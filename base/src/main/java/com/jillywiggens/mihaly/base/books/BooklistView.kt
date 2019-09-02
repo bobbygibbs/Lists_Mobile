@@ -1,8 +1,8 @@
 package com.jillywiggens.mihaly.base.books
 
-import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.jillywiggens.mihaly.base.R
 import com.jillywiggens.mihaly.models.ViewDelegate
 import com.jillywiggens.mihaly.models.books.Book

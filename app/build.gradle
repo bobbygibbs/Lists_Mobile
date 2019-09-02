@@ -4,16 +4,15 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 28
 
     defaultConfig {
         applicationId "com.jillywiggens.mihaly"
         minSdkVersion 23
-        targetSdkVersion 26
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-
-
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -21,6 +20,18 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/androidx.versionedparcelable_versionedparcelable.version'
+        exclude 'META-INF/androidx.localbroadcastmanager_localbroadcastmanager.version'
+        exclude 'META-INF/androidx.legacy_legacy-support-core-utils.version'
+        exclude 'META-INF/androidx.documentfile_documentfile.version'
+        exclude 'META-INF/androidx.loader_loader.version'
+        exclude 'META-INF/androidx.print_print.version'
+        exclude 'META-INF/androidx.core_core.version'
+
+        exclude 'META-INF/proguard/androidx-annotations.pro'
     }
 
 }

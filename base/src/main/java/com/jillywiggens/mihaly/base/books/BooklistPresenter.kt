@@ -1,9 +1,9 @@
 package com.jillywiggens.mihaly.base.books
 
 import android.content.Context
-import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.view.LayoutInflater
+import androidx.appcompat.app.AlertDialog
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.jillywiggens.mihaly.base.R
