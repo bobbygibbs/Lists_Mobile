@@ -27,6 +27,9 @@ class BooklistViewAdapter(val presenter: BooklistPresenter, val booklist: List<B
                 authorTv.text = author
                 yearTv.text = year.toString()
                 pagesTv.text = pages.toString()
+                finishBtn.setOnClickListener {
+                    presenter.finishBook(this)
+                }
                 deleteBtn.setOnClickListener {
                     presenter.deleteBook(this)
                 }

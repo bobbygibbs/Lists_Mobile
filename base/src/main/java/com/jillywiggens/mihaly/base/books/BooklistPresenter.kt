@@ -3,6 +3,7 @@ package com.jillywiggens.mihaly.base.books
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.module.SimpleModule
@@ -89,6 +90,17 @@ class BooklistPresenter(val context: Context) : Presenter() {
                         .setNegativeButton(android.R.string.no, null)
                         .show()
             }
+
+    fun finishBook(book: Book) {
+        disposables.add(bookService.finishBook(book.id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        { loadBooks() },
+                        { Log.d(TAG, "missing pages", it) }
+                ))
+        Toast.makeText(context, R.string.congrations, Toast.LENGTH_LONG).show()
+    }
 
     fun deleteBook(book: Book) =
             AlertDialog.Builder(context)

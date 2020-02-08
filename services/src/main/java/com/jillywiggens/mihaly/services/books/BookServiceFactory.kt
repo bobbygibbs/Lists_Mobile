@@ -20,6 +20,9 @@ object BookServiceFactory {
         @POST("books")
         fun addBook(@Body book: Book): Single<Response<Void>>
 
+        @POST("books/{id}/finish")
+        fun finishBook(@Path("id") id: Int): Single<Response<Void>>
+
         @DELETE("books/{id}")
         fun deleteBook(@Path("id") id: Int): Single<Response<Void>>
     }

@@ -9,5 +9,6 @@ class Book(
         val title: String,
         val author: String,
         val year: Int,
-        val pages: Int
+        val pages: Int,
+        val finished: Boolean = false
 )
