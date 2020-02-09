@@ -8,6 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.jillywiggens.mihaly.base.R
+import com.jillywiggens.mihaly.models.FailedToUploadState
 import com.jillywiggens.mihaly.models.Presenter
 import com.jillywiggens.mihaly.models.books.Book
 import com.jillywiggens.mihaly.models.books.BookDeserializer
@@ -51,7 +52,7 @@ class BooklistPresenter(val context: Context) : Presenter() {
                 .subscribe({
                     try {
                         view.buildBooklist(it)
-                        db.bookDao().insertAll(*it.toTypedArray())
+                        cacheBooksFromServer(it)
                     } catch (e: Throwable) {
                         Log.d(TAG, "missing pages", e)
                     } finally {
@@ -84,7 +85,17 @@ class BooklistPresenter(val context: Context) : Presenter() {
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(
                                             { loadBooks() },
-                                            { Log.d(TAG, "missing pages", it) }
+                                            {
+                                                Log.d(TAG, "missing pages", it)
+                                                cacheSingleBook(Book(
+                                                        0,
+                                                        titleEt.text.toString(),
+                                                        authorEt.text.toString(),
+                                                        yearEt.text.toString().toInt(),
+                                                        pagesEt.text.toString().toInt(),
+                                                        failedToUploadState = FailedToUploadState.Add
+                                                ))
+                                            }
                                     ))
                         }
                         .setNegativeButton(android.R.string.no, null)
@@ -112,11 +123,62 @@ class BooklistPresenter(val context: Context) : Presenter() {
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(
                                         { loadBooks() },
-                                        { Log.d(TAG, "missing pages", it) }
+                                        {
+                                            Log.d(TAG, "missing pages", it)
+                                            cacheSingleBook(book.apply {
+                                                failedToUploadState = FailedToUploadState.Delete
+                                            })
+                                        }
                                 ))
                     }
                     .setNegativeButton(android.R.string.no, null)
                     .show()
+
+    private fun cacheBooksFromServer(serverBooks: List<Book>) {
+        disposables.add(db.bookDao().getAll()
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe(
+                        { localBooks ->
+                            localBooks.filter {
+                                it.failedToUploadState != FailedToUploadState.Add
+                            }.filterNot { freeToDeleteBook ->
+                                serverBooks.map { it.id }.contains(freeToDeleteBook.id)
+                            }.forEach { db.bookDao().delete(it) }
+
+                            localBooks.filter {
+                                it.failedToUploadState == FailedToUploadState.Add
+                            }.onEach { failedToAddBook ->
+                                disposables.add((bookService.addBook(failedToAddBook).subscribeOn(Schedulers.io()).observeOn(Schedulers.io()).subscribe({ db.bookDao().delete(failedToAddBook) }, { Log.d(TAG, "missing pages", it) })))
+                            }
+
+                            val failedToDeleteBookIds = localBooks.filter {
+                                it.failedToUploadState == FailedToUploadState.Delete
+                            }.map {
+                                it.id
+                            }.onEach {
+                                disposables.add(bookService.deleteBook(it).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({ Log.d(TAG, "found pages") }, { Log.d(TAG, "missing pages", it) }))
+                            }
+                            disposables.add(db.bookDao().insertAll(*serverBooks.filterNot { failedToDeleteBookIds.contains(it.id) }.toTypedArray())
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe({ Log.d(TAG, "found pages") }, { Log.d(TAG, "missing pages", it) }))
+                        },
+                        {
+                            disposables.add(db.bookDao().insertAll(*serverBooks.toTypedArray())
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe({ Log.d(TAG, "found pages") }, { Log.d(TAG, "missing pages", it) }))
+                        }
+                ))
+    }
+
+    private fun cacheSingleBook(book: Book) {
+        disposables.add(db.bookDao().insertAll(book)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ Log.d(TAG, "found pages") }, { Log.d(TAG, "missing pages", it) }))
+    }
 
     private fun showCachedResults() {
         disposables.add(db.bookDao().getAll()

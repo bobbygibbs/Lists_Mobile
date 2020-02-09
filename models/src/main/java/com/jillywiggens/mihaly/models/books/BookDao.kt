@@ -1,6 +1,7 @@
 package com.jillywiggens.mihaly.models.books
 
 import androidx.room.*
+import io.reactivex.Completable
 import io.reactivex.Single
 
 @Dao
@@ -15,7 +16,7 @@ interface BookDao {
     fun findByTitle(title: String): Book
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg books: Book)
+    fun insertAll(vararg books: Book): Completable
 
     @Delete
     fun delete(book: Book)
