@@ -22,7 +22,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:gravity="center" />
+            android:gravity="center"
+            android:inputType="textCapWords" />
     </LinearLayout>
 
     <LinearLayout
@@ -40,7 +41,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:gravity="center" />
+            android:gravity="center"
+            android:inputType="textCapWords" />
     </LinearLayout>
 
     <LinearLayout
