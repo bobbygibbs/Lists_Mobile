@@ -1,4 +1,4 @@
-apply plugin: 'com.android.instantapp'
+apply plugin: 'com.android.dynamic-feature'
 
 dependencies {
     implementation project(':base')

@@ -1,2 +1,6 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.jillywiggens.mihaly.app" />
+<manifest xmlns:dist="http://schemas.android.com/apk/distribution"
+    package="com.jillywiggens.mihaly.app">
+
+    <dist:module dist:instant="false" dist:onDemand="false" />
+
+</manifest>

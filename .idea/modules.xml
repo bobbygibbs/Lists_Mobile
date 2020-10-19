@@ -3,11 +3,15 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MIHALY.iml" filepath="$PROJECT_DIR$/MIHALY.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/base/base.iml" filepath="$PROJECT_DIR$/base/base.iml" />
-      <module fileurl="file://$PROJECT_DIR$/instantapp/instantapp.iml" filepath="$PROJECT_DIR$/instantapp/instantapp.iml" />
-      <module fileurl="file://$PROJECT_DIR$/models/models.iml" filepath="$PROJECT_DIR$/models/models.iml" />
-      <module fileurl="file://$PROJECT_DIR$/services/services.iml" filepath="$PROJECT_DIR$/services/services.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/MIHALY.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/MIHALY.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/base/MIHALY.base.iml" filepath="$PROJECT_DIR$/.idea/modules/base/MIHALY.base.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/models/MIHALY.models.iml" filepath="$PROJECT_DIR$/.idea/modules/models/MIHALY.models.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/services/MIHALY.services.iml" filepath="$PROJECT_DIR$/.idea/modules/services/MIHALY.services.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="MIHALY/app" />
+      <module fileurl="file://$PROJECT_DIR$/base/base.iml" filepath="$PROJECT_DIR$/base/base.iml" group="MIHALY/base" />
+      <module fileurl="file://$PROJECT_DIR$/instantapp/instantapp.iml" filepath="$PROJECT_DIR$/instantapp/instantapp.iml" group="MIHALY/instantapp" />
+      <module fileurl="file://$PROJECT_DIR$/models/models.iml" filepath="$PROJECT_DIR$/models/models.iml" group="MIHALY/models" />
+      <module fileurl="file://$PROJECT_DIR$/services/services.iml" filepath="$PROJECT_DIR$/services/services.iml" group="MIHALY/services" />
     </modules>
   </component>
 </project>
