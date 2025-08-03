@@ -5,11 +5,15 @@ import com.jillywiggens.mihaly.models.books.Book
 import com.jillywiggens.mihaly.services.ServiceFactory
 import io.reactivex.Single
 import retrofit2.Response
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Path
 
 object BookServiceFactory {
 
-    private const val PERSONAL_SERVER_LOCAL_IP_ADDRESS = "http://jillywiggens.ddns.net/"
+    private const val PERSONAL_SERVER_LOCAL_IP_ADDRESS = "http://www.jillywiggens.com/"
 
     fun generate() = ServiceFactory.generateServiceFromUrl<BookService>(PERSONAL_SERVER_LOCAL_IP_ADDRESS)
 
