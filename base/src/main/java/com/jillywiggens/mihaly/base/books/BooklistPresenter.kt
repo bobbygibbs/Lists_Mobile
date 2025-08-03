@@ -8,6 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.jillywiggens.mihaly.base.R
+import com.jillywiggens.mihaly.base.databinding.LayoutBooksDialogAddBinding
 import com.jillywiggens.mihaly.models.FailedToUploadState
 import com.jillywiggens.mihaly.models.Presenter
 import com.jillywiggens.mihaly.models.books.Book
@@ -17,7 +18,6 @@ import com.jillywiggens.mihaly.services.books.BookServiceFactory
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.layout_books_dialog_add.view.*
 
 class BooklistPresenter(val context: Context) : Presenter() {
 
@@ -35,7 +35,7 @@ class BooklistPresenter(val context: Context) : Presenter() {
         if (disposables.isDisposed) disposables = CompositeDisposable()
     }
 
-    override fun createView() = BooklistView(this).also { view = it }
+    override fun createView() = BooklistView(context, this).also { view = it }
 
     override fun destroyView() = disposables.clear()
 
@@ -68,11 +68,11 @@ class BooklistPresenter(val context: Context) : Presenter() {
     }
 
     fun addBook() =
-            with((context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(R.layout.layout_books_dialog_add, null)) {
+            with((LayoutBooksDialogAddBinding.inflate(context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater, null, false))) {
                 AlertDialog.Builder(context)
                         .setTitle(R.string.add_book)
                         .setMessage(R.string.prompt_add_book)
-                        .setView(this)
+                        .setView(root)
                         .setPositiveButton(R.string.add) { _, _ ->
                             disposables.add(bookService.addBook(Book(
                                     0,

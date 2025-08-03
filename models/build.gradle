@@ -1,21 +1,30 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'com.google.devtools.ksp'
+}
+
 
 android {
-    compileSdkVersion 28
+    namespace 'com.jillywiggens.mihaly.models'
+
+    compileSdkVersion 33
 
     defaultConfig {
         minSdkVersion 23
-        targetSdkVersion 28
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    kapt {
-        generateStubs true
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_18
+        targetCompatibility JavaVersion.VERSION_18
+    }
+    kotlinOptions {
+        jvmTarget = '18'
     }
 
     buildTypes {
@@ -31,10 +40,10 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.fasterxml.jackson.core:jackson-core:2.9.5'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.5'
-
-    api 'androidx.room:room-runtime:2.1.0'
-    implementation 'androidx.room:room-rxjava2:2.1.0'
-    kapt 'androidx.room:room-compiler:2.1.0'
+    implementation("com.google.devtools.ksp:symbol-processing-api:1.5.0-1.0.0-alpha10")
+    api 'androidx.room:room-runtime:2.4.0'
+    implementation 'androidx.room:room-rxjava2:2.4.0'
+    ksp 'androidx.room:room-compiler:2.4.0'
 
     implementation 'androidx.appcompat:appcompat:1.1.0-beta01'
     testImplementation 'junit:junit:4.12'

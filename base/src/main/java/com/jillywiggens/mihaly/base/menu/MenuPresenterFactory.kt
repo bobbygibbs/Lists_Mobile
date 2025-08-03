@@ -20,9 +20,8 @@ class MenuPresenterModule(val activity: MainActivity) {
     @Provides
     fun provideActivity() = activity
 
-    @Module
     companion object {
         @Provides
-        fun providePresenter(presenter: MenuPresenter) = presenter
+        fun providePresenter(activity: MainActivity) = MenuPresenter(activity)
     }
 }

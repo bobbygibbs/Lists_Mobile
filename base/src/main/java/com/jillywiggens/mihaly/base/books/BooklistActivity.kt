@@ -11,10 +11,7 @@ class BooklistActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         presenter = BooklistPresenter(this).apply {
-            createView().let { viewDelegate ->
-                setContentView(viewDelegate.resId)
-                viewDelegate.view = findViewById(android.R.id.content)
-            }
+            setContentView(createView())
         }
 
         presenter.loadBooks()

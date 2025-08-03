@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity() {
                         .build()
                         .injectPresenter()
                         .createView()
-                        .view
         )
     }
 }

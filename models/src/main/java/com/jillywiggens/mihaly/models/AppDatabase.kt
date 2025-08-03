@@ -9,7 +9,7 @@ import com.jillywiggens.mihaly.models.books.Book
 import com.jillywiggens.mihaly.models.books.BookDao
 
 
-@Database(entities = [Book::class], version = 3)
+@Database(entities = [Book::class], version = 3, exportSchema = false)
 @TypeConverters(AppTypeConverters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun bookDao(): BookDao
